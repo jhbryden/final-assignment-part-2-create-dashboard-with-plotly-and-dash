@@ -24,8 +24,8 @@ app = dash.Dash(__name__)
 #---------------------------------------------------------------------------------
 # Create the dropdown menu options
 dropdown_options = [
-    {'label': '...........', 'value': 'Yearly Statistics'},
-    {'label': 'Recession Period Statistics', 'value': '.........'}
+    {'label': 'Yearly Statistics', 'value': 'Yearly Statistics'},
+    {'label': 'Recession Period Statistics', 'value': 'Recession Period Statistics'}
 ]
 # List of years 
 year_list = [i for i in range(1980, 2024, 1)]
@@ -112,37 +112,7 @@ def update_output_container(select_year, dropdown_statistics):
  # Yearly Statistic Report Plots                             
     elif (input_year and selected_statistics=='Yearly Statistics Report') :
         yearly_data = data[data['Year'] == int(select_year)]
-                              
-#TASK 2.5: Creating Graphs Yearly data
-                              
-#Plot 1 Automobile sales fluctuate over Recession Period (year wise) using line chart
-         # grouping data for plotting
-        yearly_rec=recession_data.groupby(['Year','Automobile_Sales']).mean().reset_index()
-        R_chart1 = dcc.Graph(figure=px.line((yearly_rec, 
-        x='Year'
-        y='Automobile_Sales',
-        title='Yearly Automobile Sales'))
-            
-# Plot 2 Total Monthly Automobile sales using line chart.
-        mon= data.groupby('Month')['Automobile_Sales'].sum().reset_index()
-        Y_chart2 = dcc.Graph(figure=px.line(mon, 
-        x='Month',
-        y='Automobile_Sales',
-        title='Monthly Automobile Sales'))
-
-            # Plot bar chart for average number of vehicles sold during the given year
-        avr_vdata=yearly_data.groupby('Vehicle_Type')['Automobile_Sales'].mean().reset_index)
-        Y_chart3 = dcc.Graph(figure=px.bar(avr_vdata,
-        x='Vehicle_Type', 
-        y='Automobile_Sales',
-        title='Average Vehicles Sold by Vehicle Type in the year {}'.format(select_year))
-
-            # Total Advertisement Expenditure for each vehicle using pie chart
-        exp_data=yearly_data.groupby('Vehicle_Type')['Advertising_Expenditure'].sum().reset_index()
-        Y_chart4 = dcc.Graph(figure=px.pie(values='Advertising_Expenditure', 
-        names='Vehicle_Type',
-        title='Total Advertisement Expenditure for each Vehicle Type'))
-        
+                                      
 #TASK 2.6: Returning the graphs for displaying Yearly data
         return [
                 html.Div(className='chart-item', children=[html.Div(children=Y_chart1),html.Div(children=Y_chart2)],style={'display':'flex'}),
@@ -155,4 +125,3 @@ def update_output_container(select_year, dropdown_statistics):
 # Run the Dash app
 if __name__ == '__main__':
     app.run_server(debug=True)
-
